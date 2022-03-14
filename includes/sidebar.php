@@ -39,7 +39,7 @@
 
             <h4>Login</h4>
 
-            <form method="post">
+            <form action="includes/login.php" method="post">
                 <div class="form-group">
                     <input name="username" type="text" class="form-control" placeholder="Enter Username">
                 </div>

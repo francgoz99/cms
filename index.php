@@ -31,7 +31,7 @@
 
                     //Displaying comments based on status
                     if ($post_status !== 'published'){
-                        echo "<h1 class>NO POST SORRY</h1>";
+                        echo "<h1 class='text-center'>NO POST SORRY</h1>";
                     }
                     else {
 

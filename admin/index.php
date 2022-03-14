@@ -21,8 +21,8 @@
                     <h1 class="page-header">
                         Welcome to admin
 
-
                         <small> <?php
+                            echo $_SESSION['username']
 
                             // if(isset($_SESSION['username'])) {
 
