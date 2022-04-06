@@ -22,7 +22,7 @@
 
                 $the_post_id = $_GET['p_id'];
             }
-            $query = "SELECT * FROM posts WHERE post_status = 'published'";
+            $query = "SELECT * FROM posts WHERE post_id = $the_post_id";
             $select_all_posts_query = mysqli_query($connection, $query);
             while ($row = mysqli_fetch_assoc($select_all_posts_query)){
             $post_title = $row['post_title'];

@@ -29,12 +29,9 @@
                     $post_content = substr($row['post_content'], 0, 100);
                     $post_status = $row['post_status'];
 
-                    //Displaying comments based on status
-                    if ($post_status !== 'published'){
-                        echo "<h1 class='text-center'>NO POST SORRY</h1>";
-                    }
-                    else {
 
+                    //Displaying comments based on status
+                    if ($post_status == 'published'){
 
                     ?>
                     <h1 class="page-header">Page Heading</h1>
@@ -73,7 +70,7 @@
 
 
 
-            <?php } }?>
+            <?php }} ?>
 
 
 

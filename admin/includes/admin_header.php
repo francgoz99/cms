@@ -48,10 +48,10 @@ if (!isset($_SESSION['user_role'])){
 
  <link href="css/styles.css" rel="stylesheet">
 
- 
- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-<script src="js/jquery.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script src="js/jquery.js"></script>
 
 <script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js"></script>
 
