@@ -1,4 +1,5 @@
 <table class="table table-bordered table-hover">
+    <thead>
     <tr>
         <th>ID</th>
         <th>Author</th>
@@ -11,6 +12,7 @@
         <th>Unapprove</th>
         <th>Delete</th>
     </tr>
+</thead>
     <tbody>
     <?php
     $query = "SELECT * FROM comments";

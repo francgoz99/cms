@@ -1,6 +1,6 @@
 <?php include "includes/admin_header.php" ?>
 
-<?php include "../includes/db.php"?>
+
 
 <?php
 if (isset($_SESSION['username'])){
