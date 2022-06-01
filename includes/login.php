@@ -2,6 +2,13 @@
 <?php session_start(); ?>
 <?php
 if (isset($_POST['login'])){
+
+   /* $password = "secret";
+    $has_format ="$2y$10&";
+    $salt = "iusesomecrazystrings22";
+
+    echo strlen($salt);
+    crypt($password, "$2y$10&iusedomecrazystrings22"); */
     $username = $_POST['username'];
    $password = $_POST['password'];
 
@@ -22,6 +29,7 @@ if (isset($_POST['login'])){
        $db_user_role =$row['user_role'];
 
    }
+   $password = crypt($password, $db_user_password);
    if ($username == $db_username && $password == $db_user_password){
 
        $_SESSION['username'] = $db_username;

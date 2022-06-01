@@ -60,7 +60,7 @@
 
                                  
                      <li>
-                        <a href="/cms/registration">Registration</a>
+                        <a href="registration.php">Registration</a>
                     </li>
                                   
                     

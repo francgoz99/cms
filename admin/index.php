@@ -1,4 +1,5 @@
 <?php include "includes/admin_header.php";?>
+
     <div id="wrapper">
 
 
@@ -274,7 +275,7 @@ $subscriber_count = mysqli_num_rows($select_all_subscribers);
                     
                     
                 </div>
-
+    
   
 
             </div>

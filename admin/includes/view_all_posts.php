@@ -158,7 +158,7 @@ confirmQuery($update_to_delete_status);
 
   <?php 
     
-    $query = "SELECT * FROM posts ORDER BY post_id DESC ";
+    $query = "SELECT * FROM posts ORDER BY post_id ASC ";
     $select_posts = mysqli_query($connection,$query);  
 
     while($row = mysqli_fetch_assoc($select_posts )) {
@@ -172,7 +172,7 @@ confirmQuery($update_to_delete_status);
         $post_tags          = $row['post_tags'];
         $post_comment_count = $row['post_comment_count'];
         $post_date          = $row['post_date'];
-       // $post_views_count   = $row['post_views_count'];
+        $post_views_count   = $row['post_views_count'];
         
         echo "<tr>";
         
@@ -276,9 +276,13 @@ echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
 
         // echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='posts.php?delete={$post_id}'>Delete</a></td>";
         //echo "<td><a href='posts.php?reset={$post_id}'>{$post_views_count}</a></td>";
+        echo "<td><a href='posts.php?reset={$post_id}'>{$post_views_count}</a></td>";
         echo "</tr>";
+        
    
     }
+
+
 
 
 
@@ -298,11 +302,11 @@ echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
 
 if(isset($_POST['delete'])){
     
-    $the_post_id = escape($_POST['post_id']);
+    $the_post_id = $_POST['post_id'];
     
     $query = "DELETE FROM posts WHERE post_id = {$the_post_id} ";
     $delete_query = mysqli_query($connection, $query);
-    header("Location: /cms/admin/posts.php");
+    header("Location: posts.php");
     
     
 }
@@ -310,9 +314,9 @@ if(isset($_POST['delete'])){
 
 if(isset($_GET['reset'])){
     
-    $the_post_id = escape($_GET['reset']);
+    $the_post_id = $_GET['reset'];
     
-    $query = "UPDATE posts SET post_views_count = 0 WHERE post_id = $the_post_id  ";
+    $query = "UPDATE posts SET post_views_count = 0 WHERE post_id =" .  mysqli_real_escape_string($connection, $_GET['reset']) . " " ;
     $reset_query = mysqli_query($connection, $query);
     header("Location: posts.php");
     
