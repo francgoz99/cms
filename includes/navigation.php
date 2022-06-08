@@ -40,29 +40,15 @@
                             <a href="/cms/admin">Admin</a>
                         </li>
 
-                        <li>
-                            <a href="/cms/includes/logout.php">Logout</a>
-                        </li>
-
-
-                    
-
-
-                        <li>
-                            <a href="/cms/login.php">Login</a>
-                        </li>
-
-
-                    
-
-
-
-
-                                 
-                     <li>
+                         <li>
                         <a href="registration.php">Registration</a>
                     </li>
-                                  
+
+                    <li>
+                        <a href="contact.php">Contact</a>
+                    </li>
+
+                         
                     
     <?php 
 

@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_GET['edit_user'])){
-     $the_user_id = $_GET['edit_user'];
+     $the_user_id = escape($_GET['edit_user']);
 
 $query = "SELECT * FROM users WHERE user_id = $the_user_id";
 $select_users_query = mysqli_query($connection, $query);
@@ -16,8 +16,10 @@ while ($row = mysqli_fetch_assoc($select_users_query)) {
     $user_image = $row['user_image'];
     $user_role = $row['user_role'];
 }
+?>
+<?php
 
-}
+
 
 if(isset($_POST['edit_user'])) {
 
@@ -28,18 +30,25 @@ if(isset($_POST['edit_user'])) {
     $username          = $_POST['username'];
     $user_email        = $_POST['user_email'];
     $user_password     = $_POST['user_password'];
+    $post_date = date('d-m-y');
 
 
 
-    $query = "SELECT randSalt from users";
-    $select_randsalt_query= mysqli_query($connection,$query);
-    if(!$select_randsalt_query){
-        die("QUERY FAILED" . mysqli_error($connection));
-    } 
-    $row = mysqli_fetch_array($select_randsalt_query);
-    $salt = $row['randSalt'];
-    $hashed_password= crypt($user_password,$salt);
+    if(!empty($user_password)){
+    $query_password = "SELECT user_password FROM users WHERE user_id = $the_user_id";
+    $get_user_query = mysqli_query($connection, $query_password);
+    confirmQuery($get_user_query);
 
+    $row = mysqli_fetch_array($get_user_query);
+    $db_user_password = $row['user_password'];
+
+
+
+
+    if($db_user_password != $user_password){
+        $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
+
+    }
 
     $query = "UPDATE users SET ";
     $query .="user_firstname = '{$user_firstname}', ";
@@ -56,10 +65,11 @@ if(isset($_POST['edit_user'])) {
     echo "User Created: " . " " . "<a href='users.php'>View Users</a> ";
 
 
-
 }
-
-
+} else{
+    header("Location: index.php");
+}
+}
 
 
 ?>
@@ -130,7 +140,7 @@ if(isset($_POST['edit_user'])) {
 
     <div class="form-group">
         <label for="post_content">Password</label>
-        <input type="password" value="<?php echo $user_password; ?>" class="form-control" name="user_password">
+        <input autocomplete = "off" type="password"  class="form-control" name="user_password">
     </div>
 
 

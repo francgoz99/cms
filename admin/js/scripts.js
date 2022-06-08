@@ -49,7 +49,7 @@ $(document).ready(function(){
  });
 
 
-    /*function loadUsersOnline() {
+    function loadUsersOnline() {
 
 
         $.get("functions.php?onlineusers=result", function(data){
@@ -67,7 +67,9 @@ $(document).ready(function(){
         loadUsersOnline();
 
 
-    },500);*/
+    },500);
+    
+    
 
 
 });

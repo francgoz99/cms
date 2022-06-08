@@ -16,7 +16,7 @@ while ($row = mysqli_fetch_array($select_user_profile_query)){
     $user_lastname = $row['user_lastname'];
     $user_email = $row['user_email'];
     $user_image = $row['user_image'];
-    $user_role = $row['user_role'];
+    
 
 }
 }
@@ -43,7 +43,6 @@ if(isset($_POST['edit_user'])) {
     $query = "UPDATE users SET ";
     $query .="user_firstname = '{$user_firstname}', ";
     $query .="user_lastname = '{$user_lastname}', ";
-    $query .="user_role   =  '{$user_role}', ";
     $query .="username = '{$username}', ";
     $query .="user_email = '{$user_email}', ";
     $query .="user_password   = '{$user_password}' ";
@@ -109,34 +108,7 @@ if(isset($_POST['edit_user'])) {
                         </div>
 
 
-                        <div class="form-group">
-
-                            <select name="user_role" id="">
-
-                                <option value="subscriber"><?php echo $user_role; ?></option>
-                                <?php
-                                if ($user_role == 'admin'){
-                                    echo "<option value='subscriber'>subcriber</option>";
-
-
-                                } else{
-                                    echo "<option value='admin'>admin</option>";
-
-
-
-                                }
-
-
-
-                                ?>
-
-
-                            </select>
-
-
-
-
-                        </div>
+                        
 
                         <!--
                               <div class="form-group">
@@ -157,7 +129,7 @@ if(isset($_POST['edit_user'])) {
 
                         <div class="form-group">
                             <label for="post_content">Password</label>
-                            <input type="password" value="<?php echo $user_password; ?>" class="form-control" name="user_password">
+                            <input autocomplete = "off" type="password"  class="form-control" name="user_password">
                         </div>
 
 

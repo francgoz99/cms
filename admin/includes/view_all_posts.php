@@ -1,7 +1,7 @@
 <?php
 
-
 include("delete_modal.php");
+//include("delete_modal.php");
 
 if(isset($_POST['checkBoxArray'])) {
 
@@ -164,7 +164,7 @@ confirmQuery($update_to_delete_status);
     while($row = mysqli_fetch_assoc($select_posts )) {
         $post_id            = $row['post_id'];
         $post_author        = $row['post_author'];
-       // $post_user          = $row['post_user'];
+        $post_user          = $row['post_user'];
         $post_title         = $row['post_title'];
         $post_category_id   = $row['post_category_id'];
         $post_status        = $row['post_status'];
@@ -184,6 +184,14 @@ confirmQuery($update_to_delete_status);
         <?php
      
         echo "<td>$post_id </td>";
+
+        //if(isset($post_author) || !empty($post_author)){
+           // echo "<td>$post_author</td>";
+
+        //} elseif(isset($post_user) || !empty($post_user)){
+           // echo "<td>$post_user</td>";
+
+       // }
 
 
         if(!empty($post_author)) {
@@ -226,39 +234,48 @@ confirmQuery($update_to_delete_status);
 echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
         echo "<td>$post_tags</td>";
 
-
+        
+        // Comment count and amount count display.
         $query = "SELECT * FROM comments WHERE comment_post_id = $post_id";
         $send_comment_query = mysqli_query($connection, $query);
-
         $row = mysqli_fetch_array($send_comment_query);
         $comment_id = $row['comment_id'];
         $count_comments = mysqli_num_rows($send_comment_query);
 
-
         echo "<td><a href='post_comments.php?id=$post_id'>$count_comments</a></td>";
+       // $send_comment_query = mysqli_query($connection, $query);
+
+        //$row = mysqli_fetch_array($send_comment_query);
+      //  $comment_id = $row['comment_id'];
+      //  $count_comments = mysqli_num_rows($send_comment_query);
+
+
+       // echo "<td><a href='post_comments.php?id=$post_id'>$count_comments</a></td>";
 
 
 
         echo "<td>$post_date </td>";
         echo "<td><a class='btn btn-primary' href='../post.php?p_id={$post_id}'>View Post</a></td>";
         echo "<td><a class='btn btn-info' href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>";
+        echo "<td><a rel='$post_id' href='javascript:void(0)' class='delete_link'>Delete</a></td>";
 
 
         ?>
 
 
-        <form method="post">
 
-            <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
+        <!-- <form method="post">
+
+            <input type="hidden" name="post_id" value="<?php// echo $post_id ?>">
 
          <?php   
 
-            echo '<td><input class="btn btn-danger" type="submit" name="delete" value="Delete"></td>';
+            //echo '<td><input class="btn btn-danger" type="submit" name="delete" value="Delete"></td>';
 
           ?>
 
 
-        </form>
+        </form>_-->
 
 
 
@@ -314,7 +331,7 @@ if(isset($_POST['delete'])){
 
 if(isset($_GET['reset'])){
     
-    $the_post_id = $_GET['reset'];
+    $the_post_id = escape($_GET['reset']);
     
     $query = "UPDATE posts SET post_views_count = 0 WHERE post_id =" .  mysqli_real_escape_string($connection, $_GET['reset']) . " " ;
     $reset_query = mysqli_query($connection, $query);
@@ -329,6 +346,7 @@ if(isset($_GET['reset'])){
 
 
 <script>
+    
     
 
 
