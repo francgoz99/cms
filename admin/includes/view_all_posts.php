@@ -72,6 +72,11 @@ confirmQuery($update_to_delete_status);
             $post_tags          = $row['post_tags']; 
             $post_content       = $row['post_content'];
 
+             // If the post tags table are empty.
+           // if(empty($post_tags)){
+             // $post_tags = "Not tags";
+           // }
+
           }
 
                  
@@ -158,7 +163,13 @@ confirmQuery($update_to_delete_status);
 
   <?php 
     
-    $query = "SELECT * FROM posts ORDER BY post_id ASC ";
+    //$query = "SELECT * FROM posts ORDER BY post_id ASC ";
+    // Joining tables using the LEFT JOIN
+     $query = "SELECT posts.post_id, posts.post_author, posts.post_user, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, ";
+     $query.="posts.post_tags, posts.post_comment_count,posts.post_date,posts.post_views_count, categories.cat_id, categories.cat_title";
+     $query.=" FROM posts";
+     $query.=" LEFT JOIN categories ON posts.post_category_id= categories.cat_id ORDER BY posts.post_id DESC";
+    
     $select_posts = mysqli_query($connection,$query);  
 
     while($row = mysqli_fetch_assoc($select_posts )) {
@@ -173,6 +184,9 @@ confirmQuery($update_to_delete_status);
         $post_comment_count = $row['post_comment_count'];
         $post_date          = $row['post_date'];
         $post_views_count   = $row['post_views_count'];
+        $Category_title   = $row['cat_title'];
+        $Category_id   = $row['cat_id'];
+        
         
         echo "<tr>";
         
@@ -216,17 +230,17 @@ confirmQuery($update_to_delete_status);
         echo "<td>$post_title</td>";
             
         
-        $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id} ";
-        $select_categories_id = mysqli_query($connection,$query);  
+       // $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id} ";
+        //$select_categories_id = mysqli_query($connection,$query);  
 
-        while($row = mysqli_fetch_assoc($select_categories_id)) {
-        $cat_id = $row['cat_id'];
-        $cat_title = $row['cat_title'];
+        //while($row = mysqli_fetch_assoc($select_categories_id)) {
+         //$cat_id = $row['cat_id'];
+        //$cat_title = $row['cat_title'];
 
         
-        echo "<td>$cat_title</td>";
+        echo "<td>$Category_title</td>";
             
-        }
+        //}
         
     
         
@@ -257,25 +271,25 @@ echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
         echo "<td>$post_date </td>";
         echo "<td><a class='btn btn-primary' href='../post.php?p_id={$post_id}'>View Post</a></td>";
         echo "<td><a class='btn btn-info' href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>";
-        echo "<td><a rel='$post_id' href='javascript:void(0)' class='delete_link'>Delete</a></td>";
+       
 
 
         ?>
 
 
 
-        <!-- <form method="post">
+         <form method="post">
 
-            <input type="hidden" name="post_id" value="<?php// echo $post_id ?>">
+            <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
 
          <?php   
 
-            //echo '<td><input class="btn btn-danger" type="submit" name="delete" value="Delete"></td>';
+            echo '<td><input class="btn btn-danger" type="submit" name="delete" value="Delete"></td>';
 
           ?>
 
 
-        </form>_-->
+        </form>
 
 
 
@@ -319,11 +333,11 @@ echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
 
 if(isset($_POST['delete'])){
     
-    $the_post_id = $_POST['post_id'];
+    $the_post_id = ($_POST['post_id']);
     
     $query = "DELETE FROM posts WHERE post_id = {$the_post_id} ";
     $delete_query = mysqli_query($connection, $query);
-    header("Location: posts.php");
+    header("Location: /cms/admin/posts.php");
     
     
 }
@@ -350,7 +364,7 @@ if(isset($_GET['reset'])){
     
 
 
-    $(document).ready(function(){
+   /* $(document).ready(function(){
 
 
         $(".delete_link").on('click', function(){
@@ -373,7 +387,7 @@ if(isset($_GET['reset'])){
 
 
 
-    });
+    });*/
 
 
 

@@ -19,6 +19,7 @@
             <?php
 
             if(isset($_GET['p_id'])) {
+                // Update post views
 
                 $the_post_id = $_GET['p_id'];
 
@@ -27,9 +28,22 @@
                 if(!$send_query){
                     die("QUERY FAILED" . mysqli_error($connection));
                 }
+
+                if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'){
+                    // Dont show drafts to visitors but everything to admin.
+                    $query = "SELECT * FROM posts WHERE post_id = $the_post_id";
+           
+
+                } else{
+                    $query = "SELECT * FROM posts WHERE post_id = $the_post_id AND post_status = 'published'";
+           
+                }
             
-            $query = "SELECT * FROM posts WHERE post_id = $the_post_id";
-            $select_all_posts_query = mysqli_query($connection, $query);
+             $select_all_posts_query = mysqli_query($connection, $query);
+             if(mysqli_num_rows($select_all_posts_query) < 1){
+
+                echo "<h1>No post available</h1>";
+            } else{
             while ($row = mysqli_fetch_assoc($select_all_posts_query)){
             $post_title = $row['post_title'];
             $post_author = $row['post_user'];
@@ -135,10 +149,7 @@
 
                 <?php }
                 
-            } else{
-
-            }
-
+            
 
 
 
@@ -268,7 +279,11 @@
 
 
 
-                <?php } 
+                <?php } }} else{
+                header("Location: index.php");
+
+            }
+
                 
                 
                 ?>

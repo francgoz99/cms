@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_GET['edit_user'])){
-     $the_user_id = escape($_GET['edit_user']);
+     $the_user_id = ($_GET['edit_user']);
 
 $query = "SELECT * FROM users WHERE user_id = $the_user_id";
 $select_users_query = mysqli_query($connection, $query);
@@ -66,9 +66,9 @@ if(isset($_POST['edit_user'])) {
 
 
 }
-} else{
-    header("Location: index.php");
-}
+}// else{
+   //header("Location: index.php");
+//}
 }
 
 

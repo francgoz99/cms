@@ -2,7 +2,7 @@
 <?php  include "includes/header.php"; ?>
 
 
-<?php
+<?php 
 
 		checkIfUserIsLoggedInAndRedirect('/cms/admin');
 

@@ -35,17 +35,25 @@
             } else{
                 $page_1 = ($page * $per_page) - $per_page;
             }
-
-
-
-
+            if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'){
                 $post_query_count = "SELECT * FROM posts";
+              
+            } else {
+                $post_query_count = "SELECT * FROM posts WHERE post_status = 'published'";
+             
+            }
+
                 $find_count = mysqli_query($connection, $post_query_count);
                 $count = mysqli_num_rows($find_count);
 
-                $count = ceil($count / $per_page);
+                
+                // NO POST FEATURE HOME PAGE
 
-
+                 if($count < 1){
+                     echo "<h1>No post available</h1>";
+                 } else{
+                     $count = ceil($count / $per_page);
+                 
 
 
                 $query = "SELECT * FROM posts LIMIT $page_1, $per_page";
@@ -62,20 +70,19 @@
 
 
                     //Displaying comments based on status
-                    if ($post_status == 'published'){
+                    
 
                     ?>
                     <h1 class="page-header">Page Heading</h1>
                     <small>Secondary Text</small>
 
             <!-- First Blog Post -->
-            <h1><?php echo $count; ?></h1>
-
+            
 
 
 
             <h2>
-                <a href="post.php?p_id=<?php echo $post_id;?>"><?php echo $post_title ?></a>
+                <a href="post/<?php echo $post_id;?>"><?php echo $post_title ?></a>
             </h2>
             <p class="lead">
                 by <a href="author_posts.php?author=<?php echo $post_author?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author?></a>
@@ -85,7 +92,7 @@
             <hr>
 
 
-            <a href="post.php?p_id=<?php echo $post_id; ?>">
+            <a href="post/<?php echo $post_id; ?>">
                 <img class="img-responsive" src="images/<?php echo $post_image;?>" alt="">
             </a>
 

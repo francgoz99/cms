@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
            
@@ -21,31 +21,62 @@
                   
                   <?php 
 
-    $query = "SELECT * FROM categories LIMIT 3";
+    $query = "SELECT * FROM categories LIMIT 5";
     $select_all_categories_query = mysqli_query($connection,$query);
 
     while($row = mysqli_fetch_assoc($select_all_categories_query)) {
        $cat_title = $row['cat_title'];
        $cat_id = $row['cat_id'];
+
+       // ACTIVE NAVIGATION LINKS
+       $category_class = '';
+       $registration_class = '';
+
+      $page_name = basename($_SERVER['PHP_SELF']);
+      $registration = 'registration.php';
+
+      if(isset($_GET['category']) && $_GET['category'] == $cat_id){
+          $category_class = 'active';
+     
+        } else if($page_name == $registration ){
+            $registration_class = 'active';
+        }
         
-        echo "<li><a href='/cms/category/{$cat_id}'>{$cat_title}</a></li>";
+        echo "<li class= '$category_class'><a href='/cms/category/{$cat_id}'>{$cat_title}</a></li>";
         
     }
                    ?> 
+
+                   <?php if(isLoggedIn()): ?>
+                        <li>
+                            <a href="/cms/admin">Admin</a>
+                        </li>
+                
+
+                        <li>
+                            <a href="/cms/includes/logout.php">Logout</a>
+                        </li>
+                  <?php else: ?>
+                  <li>
+                            <a href="/cms/login.php">Login</a>
+                        </li>
+
+
+
+                   <?php endif; ?>
     
 
                     
 
-                        <li>
-                            <a href="/cms/admin">Admin</a>
-                        </li>
+                        
+                       
 
-                         <li>
-                        <a href="registration.php">Registration</a>
+                         <li class='<?php echo $registration_class?>'>
+                        <a href="/cms/registration">Registration</a>
                     </li>
 
                     <li>
-                        <a href="contact.php">Contact</a>
+                        <a href="/cms/contact">Contact</a>
                     </li>
 
                          
