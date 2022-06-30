@@ -1,9 +1,17 @@
+<?php use PHPMailer\PHPMailer\PHPMailer; ?>
 <?php  include "includes/db.php"; ?>
 <?php  include "includes/header.php"; ?>
 
 <?php
+
+require './vendor/autoload.php';
+
+
+
+
+
 // calling the function ifItIsMethod and checking if the user has a GET request.
-if(!ifItIsMethod('get') && !$_GET['forgot']){
+if(!isset($_GET['forgot'])){
     redirect('index');
 }
 
@@ -13,6 +21,7 @@ if(ifItIsMethod('post')) {
         $email = $_POST['email'];
         $length = 50;
         $token = bin2hex(openssl_random_pseudo_bytes($length));
+        
 
         // declaring token variables and updating the values on the database
         if(email_exists($email)){
@@ -21,9 +30,46 @@ if(ifItIsMethod('post')) {
             mysqli_stmt_bind_param($stmt, "s", $email);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
-        } else {
-            echo mysqli_stmt_error($stmt);
-        }
+
+            /**
+             *
+             * configure PHPMailer
+             * 
+             * 
+             *
+             */
+             $mail = new PHPMailer(true);
+
+                                  
+    $mail->isSMTP();                                            //Send using SMTP
+    $mail->Host       = Config::SMTP_HOST;                    //Set the SMTP server to send through                                  //Enable SMTP authentication
+    $mail->Username   = Config::SMTP_USER;                      //SMTP username
+    $mail->Password   = Config::SMTP_PASSWORD;;                               //SMTP password
+    $mail->Port       = Config::SMTP_PORT;               //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
+    $mail->SMTPAuth   = true; 
+    $mail->isHTML(true);
+    $mail->CharSet = 'UTF-8';
+
+    $mail->setFrom('enquiries@mozohealth.com', 'Mozo Health');
+    $mail->addAddress($email);
+    $mail->Subject = 'This is a test email';
+    $mail->Body ='<p>Please click to reset your password.
+     
+    <a href="http://localhost/cms/reset.php?email='.$email.'&token='.$token.'">http://localhost/cms/reset.php?email='.$email.'&token='.$token.'</a>
+    </p>';
+
+    if($mail->send()){
+        $emailSent = true;
+    } else {
+        echo "NOT SENT";
+    }
+   
+
+            
+
+
+        } 
     }
    
     }
@@ -44,6 +90,7 @@ if(ifItIsMethod('post')) {
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="text-center">
+                            <?php if(!isset($emailSent)): ?>
 
 
                                 <h3><i class="fa fa-lock fa-4x"></i></h3>
@@ -70,6 +117,9 @@ if(ifItIsMethod('post')) {
                                     </form>
 
                                 </div><!-- Body-->
+                                <?php else: ?>
+                                    <h2>Please check your email</h2>
+                                    <?php endIf; ?>
 
                         </div>
                     </div>

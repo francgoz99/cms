@@ -11,7 +11,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/cms">CMS Front</a>
+                <a class="navbar-brand" href="index.php">CMS Front</a>
             </div>
             
             
@@ -42,14 +42,14 @@
             $registration_class = 'active';
         }
         
-        echo "<li class= '$category_class'><a href='/cms/category/{$cat_id}'>{$cat_title}</a></li>";
+        echo "<li class= '$category_class'><a href='/cms/category.php?category={$cat_id}'>{$cat_title}</a></li>";
         
     }
                    ?> 
 
                    <?php if(isLoggedIn()): ?>
                         <li>
-                            <a href="/cms/admin">Admin</a>
+                            <a href="admin">Admin</a>
                         </li>
                 
 
@@ -72,11 +72,11 @@
                        
 
                          <li class='<?php echo $registration_class?>'>
-                        <a href="/cms/registration">Registration</a>
+                        <a href="registration.php">Registration</a>
                     </li>
 
                     <li>
-                        <a href="/cms/contact">Contact</a>
+                        <a href="contact.php">Contact</a>
                     </li>
 
                          

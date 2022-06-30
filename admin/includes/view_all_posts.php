@@ -162,13 +162,15 @@ confirmQuery($update_to_delete_status);
                       
 
   <?php 
-    
-    //$query = "SELECT * FROM posts ORDER BY post_id ASC ";
+
+  $user = currentUser();
+ 
+    $query = "SELECT * FROM posts WHERE post_user = '$user' ORDER BY post_id ASC ";
     // Joining tables using the LEFT JOIN
-     $query = "SELECT posts.post_id, posts.post_author, posts.post_user, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, ";
-     $query.="posts.post_tags, posts.post_comment_count,posts.post_date,posts.post_views_count, categories.cat_id, categories.cat_title";
-     $query.=" FROM posts";
-     $query.=" LEFT JOIN categories ON posts.post_category_id= categories.cat_id ORDER BY posts.post_id DESC";
+     //$query = "SELECT posts.post_id, posts.post_author, posts.post_user, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, ";
+    // $query.="posts.post_tags, posts.post_comment_count,posts.post_date,posts.post_views_count, categories.cat_id, categories.cat_title";
+   //  $query.=" FROM posts";
+     //$query.=" LEFT JOIN categories ON posts.post_category_id= categories.cat_id ORDER BY posts.post_id DESC";
     
     $select_posts = mysqli_query($connection,$query);  
 
@@ -184,9 +186,7 @@ confirmQuery($update_to_delete_status);
         $post_comment_count = $row['post_comment_count'];
         $post_date          = $row['post_date'];
         $post_views_count   = $row['post_views_count'];
-        $Category_title   = $row['cat_title'];
-        $Category_id   = $row['cat_id'];
-        
+       
         
         echo "<tr>";
         
@@ -230,17 +230,17 @@ confirmQuery($update_to_delete_status);
         echo "<td>$post_title</td>";
             
         
-       // $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id} ";
-        //$select_categories_id = mysqli_query($connection,$query);  
+        $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id} ";
+        $select_categories_id = mysqli_query($connection,$query);  
 
-        //while($row = mysqli_fetch_assoc($select_categories_id)) {
-         //$cat_id = $row['cat_id'];
-        //$cat_title = $row['cat_title'];
+        while($row = mysqli_fetch_assoc($select_categories_id)) {
+         $cat_id = $row['cat_id'];
+        $cat_title = $row['cat_title'];
 
         
-        echo "<td>$Category_title</td>";
+        echo "<td>$cat_title</td>";
             
-        //}
+        }
         
     
         
