@@ -200,6 +200,8 @@
         ?>
         <?php 
         if(isLoggedIn()){?>
+        <!--Creating the like button -->
+                
 
                      <div class="row">
                       <p class="pull-right"><a class="<?php echo userLikedThisPost($the_post_id) ? 'unlike' : 'like'; ?>" href=""><span class="glyphicon glyphicon-thumbs-up"
@@ -241,7 +243,6 @@
         
 
 
-                <!--Creating the like button -->
                 
 
      
@@ -410,7 +411,7 @@
 // Creating the like button
 
 $(document).ready(function(){
-
+    // Adding a tooltip feature
     $("[data-toggle='tooltip']").tooltip();
     
     var post_id = <?php echo $the_post_id; ?>;

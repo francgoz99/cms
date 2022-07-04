@@ -1,6 +1,8 @@
 
 <?php
 
+// ======DATABASE HELPER FUNCTIONS=====//
+
 function imagePlaceholder($image=null){
     if(!$image){
         return 'image_4.jpg';
@@ -25,8 +27,109 @@ function redirect($location){
 
 function query($query){
     global $connection;
-    return mysqli_query($connection, $query);
+    $result = mysqli_query($connection, $query);
+    confirmQuery($result);
+    return $result;
 }
+
+function fetchRecords($result){
+    return mysqli_fetch_array($result);
+}
+
+function count_records($result){
+    return mysqli_num_rows($result);
+}
+
+//======END DATABASE HELPERS======//
+
+//======GENERAL HELPERS======//
+
+function get_user_name(){
+
+    return isset($_SESSION['username']) ? $_SESSION['username']: null;
+
+    // if(isset($_SESSION['username'])) {
+
+    //     return $_SESSION['username'];
+    //     }
+}
+
+//======END GENERAL HELPERS=====//
+
+
+
+
+
+//======AUTHENTICATION HELPER====//
+
+function is_admin(){
+    // Creating an admin detection feature
+    
+    if(isLoggedIn()){
+
+        $result = query("SELECT user_role FROM users WHERE user_id = ".$_SESSION['user_id']."");
+        
+    
+        $row = fetchRecords($result);
+    
+        if($row['user_role'] == 'admin'){
+            return true;
+        } else {
+            return false;
+        }
+    
+    }
+    return false;
+
+    }
+
+    //====== END AUTHENTICATION HELPER====//
+    
+    //======USER SPECIFIC HELPERS======//
+     function get_all_user_posts(){
+    return query("SELECT * FROM posts WHERE user_id = ".loggedInUserId()."");
+     
+  
+     }
+
+     function get_all_post_user_comments(){
+        return query("SELECT * FROM 
+        posts INNER JOIN comments ON posts.post_id = comments.comment_post_id WHERE user_id=".loggedInUserId()."");
+
+     }
+
+     function get_all_user_categories(){
+        return query("SELECT * FROM categories WHERE user_id = ".loggedInUserId()."");
+     }
+
+     function get_all_user_published_posts(){
+        
+        return query("SELECT * FROM posts WHERE user_id = ".loggedInUserId()." AND post_status= 'published'");
+     
+     }
+
+     function get_all_user_draft_posts(){
+        
+        return query("SELECT * FROM posts WHERE user_id = ".loggedInUserId()." AND post_status= 'draft'");
+     
+     }
+
+     function get_all_user_approved_posts_comments(){
+        
+        return query("SELECT * FROM 
+        posts INNER JOIN comments ON posts.post_id = comments.comment_post_id WHERE user_id=".loggedInUserId()."
+        AND comment_status='approved'");
+
+     }
+
+     function get_all_user_unapproved_posts_comments(){
+        
+        return query("SELECT * FROM 
+        posts INNER JOIN comments ON posts.post_id = comments.comment_post_id WHERE user_id=".loggedInUserId()." 
+        AND comment_status='unapproved'");
+
+     }
+
 
 function ifItIsMethod($method=null){
     if($_SERVER['REQUEST_METHOD']==strtoupper($method)){
@@ -46,6 +149,7 @@ function loggedInUserId(){
     
     if(isLoggedIn()){
         $result = query("SELECT * FROM users WHERE username='" . $_SESSION['username'] ."'");
+
         confirmQuery($result);
         $user = mysqli_fetch_array($result);
         return mysqli_num_rows($result) >= 1 ? $user['user_id'] : false;
@@ -216,23 +320,9 @@ function checkStatus($table,$column,$status){
     
 }
 
-function is_admin($username){
-    // Creating an admin detection feature
-    global $connection;
 
-    $query = "SELECT user_role FROM users WHERE username = '$username'";
-    $result = mysqli_query($connection, $query);
-    confirmQuery($result);
 
-    $row = mysqli_fetch_array($result);
 
-    if($row['user_role'] == 'admin'){
-        return true;
-    } else {
-        return false;
-    }
-
-}
 
 function username_exists($username){
     //Duplicate username function
@@ -320,7 +410,8 @@ function login_user($username, $password){
        $db_user_role =$row['user_role'];
        //Verifying password
    if (password_verify($password, $db_user_password)) {
-
+    $_SESSION['user_id'] = $db_user_id;
+  
     $_SESSION['username'] = $db_username;
     $_SESSION['firstname'] = $db_user_firstname;
     $_SESSION['lastname'] = $db_user_lastname;

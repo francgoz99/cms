@@ -3,6 +3,7 @@ if (isset($_POST['create_post'])){
     $post_title = escape($_POST['title']);
     $post_user = escape($_POST['post_user']);
     $post_category_id = escape($_POST['post_category']);
+    
     $post_status = escape($_POST['post_status']);
 
     $post_image = escape($_FILES['image']['name']);
@@ -17,7 +18,7 @@ if (isset($_POST['create_post'])){
 
     $query = "INSERT INTO posts(post_category_id, post_title, post_user, post_date,
                   post_image, post_content, post_tags, post_status)";
-     $query .= "VALUES({$post_category_id},'{$post_title}','{$post_user}',now(),'{$post_image}','{$post_content}','{$post_tags}','{$post_status}')";
+     $query .= "VALUES({$post_category_id}, '{$post_title}','{$post_user}',now(),'{$post_image}','{$post_content}','{$post_tags}','{$post_status}')";
      $create_post_query = mysqli_query($connection,$query);
      confirmQuery($create_post_query);
      $the_post_id = mysqli_insert_id($connection);

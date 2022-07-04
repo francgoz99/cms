@@ -1,11 +1,5 @@
 <?php include "includes/admin_header.php";?>
 
-<?php $post_mod_count= count_records(get_all_user_posts()); 
-      $comment_mod_count = count_records(get_all_post_user_comments());
-      $category_mod_count = count_records(get_all_user_categories());
-?>
-
-
     <div id="wrapper">
         
 
@@ -26,8 +20,28 @@
                        
                        
                         <h1 class="page-header">
-                            <small>Role: Admin</small>
-                            Welcome to admin <?php echo strtoupper(get_user_name()); ?>
+                            Welcome to the Admin Dashboard
+                            
+                            
+                            <small> <?php 
+
+                            if(isset($_SESSION['username'])) {
+
+                            echo $_SESSION['username'];
+
+
+
+
+                            }
+
+
+                        
+
+
+
+
+
+                            ?></small>
                         </h1>
 
                        
@@ -49,15 +63,7 @@
                         <i class="fa fa-file-text fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                      
-                     
-
-                       
-
-                    <?php echo "<div class='huge'>".$post_mod_count."</div>" ?>
-
-                        
-
+                    <div class='huge'><?php echo $post_count = recordCount('posts'); ?></div>
 
                         <div>Posts</div>
                     </div>
@@ -80,7 +86,8 @@
                                         <i class="fa fa-comments fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <?php echo "<div class='huge'> {$comment_mod_count}</div>"; ?>
+
+                                    <div class='huge'><?php echo $comment_count = recordCount('comments'); ?></div>
 
 
            
@@ -97,7 +104,32 @@
                             </a>
                         </div>
                     </div>
-                   
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-yellow">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-user fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+
+                                    <div class='huge'><?php echo $user_count = recordCount('users'); ?></div>
+
+
+                                       
+                                        <div> Users</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="users.php">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-red">
                             <div class="panel-heading">
@@ -107,7 +139,7 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
 
-                                    <?php echo "<div class='huge'> {$category_mod_count}</div>"; ?>
+                                    <div class='huge'><?php echo $category_count = recordCount('categories'); ?></div>
 
 
                                    <div>Categories</div>
@@ -129,29 +161,27 @@
                 
     <?php 
 
-$published_post_count =  count_records(get_all_user_published_posts());
+$post_published_count =  checkStatus('posts','post_status','published');
                                      
 
                                       
 //$query = "SELECT * FROM posts WHERE post_status = 'draft' ";
 //$select_all_draft_posts = mysqli_query($connection,$query);
 //Refactoring view draft posts graph display
-$draft_post_count = count_records(get_all_user_draft_posts());
-
-$comment_approved_count = count_records(get_all_user_approved_posts_comments());
+$post_draft_count = checkStatus('posts','post_status','draft');
 
 
 //$query = "SELECT * FROM comments WHERE comment_status = 'unapproved' ";
 //$unapproved_comments_query = mysqli_query($connection,$query);
 //Refactoring view pending comment graph display
-$comment_unapproved_count = count_records(get_all_user_unapproved_posts_comments());
+$unapproved_comment_count = checkStatus('comments','comment_status','unapproved');
 
 
 //$query = "SELECT * FROM users WHERE user_role = 'subscriber'";
 //$select_all_subscribers = mysqli_query($connection,$query);
 //Refactoring view subscriber graph display
 
-
+$subscriber_count = checkStatus('users','user_role','subscriber');
 
 
 
@@ -173,11 +203,11 @@ $comment_unapproved_count = count_records(get_all_user_unapproved_posts_comments
             
             <?php
                                       
-    $element_text = ['All Posts','Active Posts','Draft Posts', 'Comments','Approved Comments', 'Pending Comments', 'Categories'];       
-    $element_count = [$post_mod_count,$published_post_count, $draft_post_count, $comment_mod_count, $comment_approved_count,$comment_unapproved_count, $category_mod_count];
+    $element_text = ['All Posts','Active Posts','Draft Posts', 'Comments','Pending Comments', 'Users','Subscribers', 'Categories'];       
+    $element_count = [$post_count,$post_published_count, $post_draft_count, $comment_count,$unapproved_comment_count, $user_count,$subscriber_count,$category_count];
 
 
-    for($i =0;$i < 7; $i++) {
+    for($i =0;$i < 8; $i++) {
     
         echo "['{$element_text[$i]}'" . "," . "{$element_count[$i]}],";
      
